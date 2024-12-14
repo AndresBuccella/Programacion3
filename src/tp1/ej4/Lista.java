@@ -1,4 +1,4 @@
-package tp1.ej3;
+package tp1.ej4;
 
 public class Lista<T> {
 
@@ -35,7 +35,6 @@ public class Lista<T> {
         }
         return null;
     }
-
     private T getRecursivo(Nodo<T> puntero, int pos){
         if(pos == 0) {
             return puntero.getContent();
@@ -73,6 +72,20 @@ public class Lista<T> {
         return this.size;
     }
 
+    public int indexOf(T elem){
+        if(this.size == 0 || elem == null)
+            return -1;
+        Nodo<T> puntero = this.raiz;
+        int pos = 0;
+        while(puntero != null){
+            if(elem.equals(puntero.getContent()))
+                return pos;
+            puntero = puntero.getNext();
+            pos++;
+        }
+        return -1;
+    }
+
     private String toStringIterativo(){
         StringBuilder s = new StringBuilder();
         Nodo<T> puntero = this.raiz;
@@ -82,14 +95,12 @@ public class Lista<T> {
         }
         return s.toString().trim();
     }
-
     private String toStringRecursivo(Nodo<T> puntero){
         if(puntero.getNext() == null)
             return puntero.toString();
 
         return puntero.toString() + " " + this.toStringRecursivo(puntero.getNext());
     }
-
     public String toString() {
         if (this.size == 0)
             return "[]";
@@ -102,7 +113,7 @@ public class Lista<T> {
     }
 
     public static void main(String[] args) {
-        Lista<String> l = new Lista<>();
+        Lista<String> l = new Lista<String>();
         l.insertFront("hola");
         l.insertFront("que tal");
         l.insertFront("adios");

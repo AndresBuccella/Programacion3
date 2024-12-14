@@ -1,6 +1,8 @@
-package tp1.ej3;
+package tp1.ej5;
 
-public class Lista<T> {
+import java.util.Iterator;
+
+public class Lista<T> implements Iterable<T>{
 
     private Nodo<T> raiz;
     private int size;
@@ -35,7 +37,6 @@ public class Lista<T> {
         }
         return null;
     }
-
     private T getRecursivo(Nodo<T> puntero, int pos){
         if(pos == 0) {
             return puntero.getContent();
@@ -73,6 +74,20 @@ public class Lista<T> {
         return this.size;
     }
 
+    public int indexOf(T elem){
+        if(this.size == 0 || elem == null)
+            return -1;
+        Nodo<T> puntero = this.raiz;
+        int pos = 0;
+        while(puntero != null){
+            if(elem.equals(puntero.getContent()))
+                return pos;
+            puntero = puntero.getNext();
+            pos++;
+        }
+        return -1;
+    }
+
     private String toStringIterativo(){
         StringBuilder s = new StringBuilder();
         Nodo<T> puntero = this.raiz;
@@ -82,14 +97,12 @@ public class Lista<T> {
         }
         return s.toString().trim();
     }
-
     private String toStringRecursivo(Nodo<T> puntero){
         if(puntero.getNext() == null)
             return puntero.toString();
 
         return puntero.toString() + " " + this.toStringRecursivo(puntero.getNext());
     }
-
     public String toString() {
         if (this.size == 0)
             return "[]";
@@ -101,11 +114,38 @@ public class Lista<T> {
         //return this.toStringIterativo();
     }
 
+    @Override
+    public Iterator iterator() {
+        return new Iterator(this.raiz);
+    }
+
+    private class Iterator implements java.util.Iterator{
+
+        private Nodo<T> puntero;
+
+        public Iterator(Nodo<T> puntero){ this.puntero = puntero; }
+
+        @Override
+        public boolean hasNext() {
+            return this.puntero != null;
+        }
+
+        @Override
+        public T next() {
+            T content = this.puntero.getContent();
+            this.puntero = puntero.getNext();
+            return content;
+        }
+    }
+
     public static void main(String[] args) {
-        Lista<String> l = new Lista<>();
+        Lista<String> l = new Lista<String>();
         l.insertFront("hola");
         l.insertFront("que tal");
-        l.insertFront("adios");
-        System.out.println(l);
+        l.insertFront("bien");
+        //System.out.println(l);
+        for (String s : l){
+            System.out.println(s);
+        }
     }
 }

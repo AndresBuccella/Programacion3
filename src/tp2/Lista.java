@@ -337,7 +337,7 @@ public class Lista<T> implements Iterable<T> {
         //seleccionEnUnaFuncion(l, 0);
         //seleccion(l);
         //burbujeo(l, 0);
-        mergesort(l);
+        sort(l);
         System.out.println(l);
 /*
         Lista<Integer> l2 = new Lista<Integer>();

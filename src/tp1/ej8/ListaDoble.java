@@ -72,11 +72,11 @@ public class ListaDoble<T> extends Lista<T> {
         this.setSize(this.size() + 1);
     }
     public T extractFront() {
-        if(this.raiz == null)
+        if(this.getRaiz() == null)
             return null;
 
-        Nodo<T> puntero = this.raiz;
-        this.raiz = this.raiz.getNext();
+        Nodo<T> puntero = this.getRaiz();
+        this.setRaiz(this.getRaiz().getNext());
         puntero.setNext(null);
         T content = puntero.getContent();
         this.size--;

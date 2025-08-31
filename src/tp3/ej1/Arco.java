@@ -28,7 +28,7 @@ public class Arco<T> {
     public void setContent(T etiqueta){
         this.etiqueta = etiqueta;
     }
-    public T getContent(){
+    public T getEtiqueta(){
         return this.etiqueta;
     }
     public String toString(){

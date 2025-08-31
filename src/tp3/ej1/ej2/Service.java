@@ -1,6 +1,7 @@
 package tp3.ej1.ej2;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -437,7 +438,7 @@ public class Service<T> {
 
         return camino;
     }
-
+//DFS
     public List<List<Integer>> todosLosCaminoSinElColor(Integer v1, Integer v2, String color){
         List<List<Integer>> caminos = new LinkedList<>();
     
@@ -449,7 +450,7 @@ public class Service<T> {
         Aires a la ciudad de Tandil, considerando que en el tramo Las Flores-Rauch está cortado al
         tránsito.
      */
-    
+
     //Lo mismo que el 8 pero comparando actual con Las Flores y adyacente con Rauch y viceversa.
     //No es necesario controlar volver para atrás porque ya lo hace cuando se agrega el vertice
     //y despues se controla que no se haya visitado
@@ -471,6 +472,32 @@ public class Service<T> {
         cada tarea más el tiempo de espera entre cada par de tareas: 70 horas.
         Ver práctico con diagrama.
      */
+
+    public int getDuracion(Tarea tareaA, Tarea tareaB){
+        
+        if(tareaA.equals(tareaB)){
+            return tareaA.getDuracion();
+        } 
+        int result = 0;
+        /*
+        List<Tarea> listaTareas = new ArrayList<>(this.getCaminoMasCorto(tareaA, tareaB)); //Imaginemos que trabaja con tareas
+
+        if (listaTareas.isEmpty()) return 0;
+        if (listaTareas.size() == 2) 
+            return tareaA.getDuracion() + 
+                this.grafo.obtenerArco(tareaA, tareaB).getEspera() + 
+                tareaB.getDuracion();
+        for(int i = 0; i <= listaTareas.size()-1; i++){
+            if(i == listaTareas.size()-1){
+                result+= listaTareas.get(i).getDuracion();
+            }else{
+                result += listaTareas.get(i).getDuracion() + 
+                            this.grafo.obtenerArco(listaTareas.get(i), listaTareas.get(i+1)).getEspera();
+            }
+        }
+    */
+        return result;
+    }
 
 
 

@@ -317,7 +317,7 @@ public class Service<T> {
         return false;
     }
 //EN BFS
-    public List<Integer> conexionSinPasarPor(Integer a, Integer b, Integer i) {
+    public List<Integer> conexionSinPasarPorBFS(Integer a, Integer b, Integer i) {
         Queue<Integer> cola = new LinkedList<>();
         Map<Integer, Integer> predecesor = new HashMap<>();
         Set<Integer> visitados = new HashSet<>();
@@ -351,23 +351,110 @@ public class Service<T> {
         }
         return camino;
     }
+    
     /* Ej 7
      * Supongamos que una ciudad se encuentra modelada mediante un grafo, donde cada nodo
         es una esquina, y las aristas representan las calles. Diseñe un algoritmo tal que dadas dos
         esquinas, devuelva el camino más corto entre ambas de manera de caminar la menor
         cantidad de cuadras posible
      */
+
+    public List<Integer> getCaminoMasCorto(Integer esquinaA, Integer esquinaB){
+        LinkedList<Integer> camino = new LinkedList<>();
+        Queue<Integer> cola = new LinkedList<>();
+        HashMap<Integer, Integer> predecesores = new HashMap<>();
+        HashSet<Integer> visitados = new HashSet<>();
+
+        if (esquinaA.equals(esquinaB)) return List.of(esquinaA);
+
+        cola.add(esquinaA);
+        visitados.add(esquinaA);
+
+        while (!cola.isEmpty()) {
+            int actual = cola.poll();
+            if (actual == esquinaB) break;
+
+            Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(actual);
+            while (adyacentes.hasNext()) {
+                Integer adyacente = adyacentes.next();
+                if (!visitados.contains(adyacente)) {
+                    cola.add(adyacente);
+                    visitados.add(adyacente);
+                    predecesores.put(adyacente, actual);
+                }
+            }
+        }
+
+        if (!predecesores.containsKey(esquinaB)) {
+            return List.of();
+        }
+
+        for(Integer x = esquinaB; x != null; x = predecesores.get(x)){
+            camino.addFirst(x);
+            if(x.equals(esquinaA)) break;
+        }
+
+        return camino;
+    }
+
     /* Ej 8
      * Dados un grafo G con sus vértices rotulados con colores y dos vértices v1 y v2, escriba un
         algoritmo que encuentre un camino desde el vértice v1 al vértice v2 tal que no pase por
         vértices rotulados con el color rojo.
      */
+
+    public List<Integer> caminoDeColores(Integer v1, Integer v2, String color){
+        //if (this.grafo.getColor(v1).equals(color)) return List.of(); //Lo comento porque trabajo con Integer
+        List<Integer> camino = new LinkedList<>();
+        HashSet<Integer> visitados = new HashSet<>();
+        Queue<Integer> cola = new LinkedList<>();
+        HashMap<Integer, Integer> predecesores = new HashMap<>();
+
+        cola.add(v1);
+        visitados.add(v1);
+
+        while (!cola.isEmpty()) {
+            int actual = cola.poll();
+            Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(actual);
+            while (adyacentes.hasNext()) {
+                Integer adyacente = adyacentes.next();
+
+                //if (this.grafo.getColor(adyacente).equals(color)) continue; 
+                if (visitados.contains(adyacente)) continue;
+
+                cola.add(adyacente);
+                visitados.add(adyacente);
+                predecesores.put(adyacente, actual);
+            }
+        }
+
+        if (!predecesores.containsKey(v2)) return List.of();
+
+        for(Integer x = v2; x != null; x = predecesores.get(x)){
+            camino.addFirst(x);
+            if(x.equals(v1)) break;
+        }
+
+        return camino;
+    }
+
+    public List<List<Integer>> todosLosCaminoSinElColor(Integer v1, Integer v2, String color){
+        List<List<Integer>> caminos = new LinkedList<>();
+    
+        return caminos;
+    }
     /* Ej 9
      * Dado un grafo no orientado que modela las rutas de la provincia de Buenos Aires, devolver
         todos los caminos alternativos que se pueden tomar para ir desde la ciudad de Buenos
         Aires a la ciudad de Tandil, considerando que en el tramo Las Flores-Rauch está cortado al
         tránsito.
      */
+    
+    //Lo mismo que el 8 pero comparando actual con Las Flores y adyacente con Rauch y viceversa.
+    //No es necesario controlar volver para atrás porque ya lo hace cuando se agrega el vertice
+    //y despues se controla que no se haya visitado
+
+
     /* Ej 10
      * Se dispone de un conjunto de tareas, donde cada tarea tiene un nombre, una descripción y
         una duración (medida en horas). Se sabe también que hay una dependencia en el orden

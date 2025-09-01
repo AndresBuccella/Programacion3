@@ -83,8 +83,98 @@ public class Backtracking {
         cuatro booleanos, uno para cada dirección a la que se permite ir desde allí.
     */
 
+    Elem[][] matElems = new Elem[10][10];
+    public List<int[]> caminoMasCortoEnMatriz(Integer f1, Integer c1, Integer f2, Integer c2){
+        //Acá se comprueba imaginariamente que están en rango
+        List<int[]> camino = new LinkedList<>();
+        List<int[]> caminoAux = new LinkedList<>();
+        HashSet<int[]> visitados = new HashSet<>();
+        int[] origen = {f1, c1};
+        int[] destino = {f2, c2};
+        caminoMasCortoEnMatriz(origen, destino, camino, caminoAux);
+        return camino;
+    }
 
-
+    public void caminoMasCortoEnMatriz (int[] actual, int[] destino, List<int[]> camino, List<int[]> caminoAux){
+        caminoAux.add(actual);
+        if (actual[0] == destino[0] && actual[1] == destino[1]) {
+            int totalCamino = 0;
+            int totalCaminoAux = 0;
+            for (int[] coo1 : caminoAux) {
+                totalCaminoAux += matElems[coo1[0]][coo1[1]].getValor();
+            }
+            for (int[] coo2 : camino) {
+                totalCamino += matElems[coo2[0]][coo2[1]].getValor();
+            }
+            if (camino.isEmpty() || totalCamino > totalCaminoAux) {
+                camino.clear();
+                camino.addAll(caminoAux);
+            }
+        }else{
+            int[] siguiente = new int[2];
+            if (matElems[actual[0]][actual[1]].getNorte()) {
+                siguiente[0] = actual[actual[0]-1];
+                siguiente[1] = actual[actual[1]];
+                if (!this.estaEnRango(siguiente[0], siguiente[1])) return;
+                if (!matElems[siguiente[0]][siguiente[1]].getSur()) {
+                    return;
+                }
+                boolean originalNorte = matElems[actual[0]][actual[1]].getNorte();
+                boolean originalSur = matElems[siguiente[0]][siguiente[1]].getSur();
+                matElems[actual[0]][actual[1]].setNorte(false);
+                matElems[siguiente[0]][siguiente[1]].setSur(false);
+                caminoMasCortoEnMatriz(siguiente, destino, camino, caminoAux);
+                matElems[actual[0]][actual[1]].setNorte(originalNorte);
+                matElems[siguiente[0]][siguiente[1]].setSur(originalSur);
+            }
+            if (matElems[actual[0]][actual[1]].getSur()) {
+                siguiente[0] = actual[actual[0]+1];
+                siguiente[1] = actual[actual[1]];
+                if (!this.estaEnRango(siguiente[0], siguiente[1])) return;
+                if (!matElems[siguiente[0]][siguiente[1]].getNorte()) {
+                    return;
+                }
+                boolean originalSur = matElems[actual[0]][actual[1]].getSur();
+                boolean originalNorte = matElems[siguiente[0]][siguiente[1]].getNorte();
+                matElems[actual[0]][actual[1]].setSur(false);
+                matElems[siguiente[0]][siguiente[1]].setNorte(false);
+                caminoMasCortoEnMatriz(siguiente, destino, camino, caminoAux);
+                matElems[actual[0]][actual[1]].setSur(true);
+                matElems[siguiente[0]][siguiente[1]].setNorte(true);
+            }
+            if (matElems[actual[0]][actual[1]].getEste()) {
+                siguiente[0] = actual[actual[0]];
+                siguiente[1] = actual[actual[1]+1];
+                if (!this.estaEnRango(siguiente[0], siguiente[1])) return;
+                if (!matElems[siguiente[0]][siguiente[1]].getOeste()) {
+                    return;
+                }
+                boolean originalEste = matElems[actual[0]][actual[1]].getEste();
+                boolean originalOeste = matElems[siguiente[0]][siguiente[1]].getOeste();
+                matElems[actual[0]][actual[1]].setEste(false);
+                matElems[siguiente[0]][siguiente[1]].setOeste(false);
+                caminoMasCortoEnMatriz(siguiente, destino, camino, caminoAux);
+                matElems[actual[0]][actual[1]].setEste(originalEste);
+                matElems[siguiente[0]][siguiente[1]].setOeste(originalOeste);
+            }
+            if (matElems[actual[0]][actual[1]].getOeste()) {
+                siguiente[0] = actual[actual[0]];
+                siguiente[1] = actual[actual[1]-1];
+                if (!this.estaEnRango(siguiente[0], siguiente[1])) return;
+                if (!matElems[siguiente[0]][siguiente[1]].getEste()) {
+                    return;
+                }
+                boolean originalOeste = matElems[actual[0]][actual[1]].getOeste();
+                boolean originalEste = matElems[siguiente[0]][siguiente[1]].getEste();
+                matElems[actual[0]][actual[1]].setOeste(false);
+                matElems[siguiente[0]][siguiente[1]].setEste(false);
+                caminoMasCortoEnMatriz(siguiente, destino, camino, caminoAux);
+                matElems[actual[0]][actual[1]].setOeste(originalOeste);
+                matElems[siguiente[0]][siguiente[1]].setEste(originalEste);
+            }
+        }
+        caminoAux.removeLast();
+    }
 
     /*
     Ejercicio 3.
@@ -95,7 +185,14 @@ public class Backtracking {
         en dos subconjuntos disjuntos, tal que la suma de sus elementos sea la misma.
     */
 
+    public List<HashSet<Integer>> sumaConjuntos(HashSet<Integer> conjunto, Integer m){
+        List<HashSet<Integer>> listaCombinaciones = new LinkedList<>();
+        HashSet<Integer> combinacion = new HashSet<>();
 
+
+
+        return listaCombinaciones;
+    }
 
 
         /*

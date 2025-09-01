@@ -1,6 +1,37 @@
 package tp4;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+
 public class Backtracking {
+
+	private CSVReader dataset;
+    private Grafo<Integer> grafo;
+    private Estado e;
+    private int tiempo;
+
+    public Backtracking(String path){
+        this.grafo = new GrafoDirigido<>();
+        this.tiempo = 0;
+        this.dataset = new CSVReader(path);
+        this.setGrafo(this.dataset);
+    }
+
+    private void setGrafo(CSVReader dataset){
+        Iterator<Arco<Integer>> it = this.dataset.getTuneles();
+
+        while (it.hasNext()) {
+            Arco<Integer> arco = it.next();
+
+            this.grafo.agregarVertice(arco.getOrigen());
+            this.grafo.agregarVertice(arco.getDestino());
+            
+            this.grafo.agregarArco(arco.getOrigen(), arco.getDestino(), arco.getEtiqueta());
+        }
+    }
     
     //Implemente algoritmos por la técnica Backtracking para los siguientes problemas.
     /*
@@ -12,9 +43,36 @@ public class Backtracking {
         puerta es un arco dirigido hacia otra habitación.
     */
 
+    public List<Integer> getCaminoMasLargo(Integer entrada, Integer salida){
+        List<Integer> caminoMasLargo = new LinkedList<>();
+        List<Integer> camino = new LinkedList<>();
+        HashSet<Integer> visitados = new HashSet<>();
 
+        getCaminoMasLargo(entrada, salida, caminoMasLargo, camino, visitados);
+        return caminoMasLargo;
+    }
 
-    
+    public void getCaminoMasLargo(Integer actual, Integer salida, List<Integer> caminoMasLargo, List<Integer> camino, HashSet<Integer> visitados){
+        visitados.add(actual);
+        camino.add(actual);
+        if (actual.equals(salida)) {
+            if (caminoMasLargo.size() < camino.size()) {
+                caminoMasLargo.clear();
+                caminoMasLargo.addAll(camino);
+            }
+        }else{
+            Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(actual);
+            while (adyacentes.hasNext()) {
+                Integer adyacente = adyacentes.next();
+                if (!visitados.contains(adyacente)) {
+                    getCaminoMasLargo(adyacente, salida, caminoMasLargo, camino, visitados);
+                }
+            }
+        }
+        visitados.remove(actual);
+        camino.removeLast();
+    }
+
     /*
     Ejercicio 2.
         Dado un laberinto consistente en una matriz cuadrada que tiene en cada posición un valor natural
@@ -72,6 +130,7 @@ public class Backtracking {
         Colocar un entero positivo (menor que un cierto valor entero k dado) en cada casilla de una
         pirámide de base B (valor entero dado) de modo que cada número sea igual a la suma de las
         casillas sobre las que está apoyado. Los números de todas las casillas deben ser diferentes.
+        Ver dibujo en tp
     */
 
 
@@ -83,6 +142,7 @@ public class Backtracking {
         tal intercambiando números contiguos (en horizontal y en vertical) con la casilla desocupada, los
         números en el tablero queden ordenados (como muestra la figura) y la casilla desocupada quede
         en la posición 4,4.
+        Ver dibujo en tp
     */
     
     

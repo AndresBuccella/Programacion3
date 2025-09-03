@@ -1,6 +1,7 @@
 package tp3.ej1;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,9 +45,18 @@ public class Main {
         list.add(n1);
         list.add(n3);
         System.out.println(list.contains(n2));*/
-        int[] arr = new int[100000000];
+/*        int[] arr = new int[100000000];
         arr[38524855] = 38524855;
-        System.out.println(arr[38524855]);
-        
+        System.out.println(arr[38524855]);*/
+        LinkedList<Integer> conjunto = new LinkedList<>();
+        conjunto.add(50);
+        conjunto.add(15);
+        conjunto.add(52);
+        conjunto.add(31);
+        conjunto.add(40);
+        conjunto.add(70);
+        conjunto.add(100);
+        conjunto.sort(Comparator.naturalOrder());
+        System.out.println(conjunto);
     }
 }
